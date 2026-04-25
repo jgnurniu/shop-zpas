@@ -1,0 +1,143 @@
+/* 1. Contenedor: Añadimos una fuente moderna sin serifas (como Inter o Roboto) */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding-bottom: 90px;
+  contain: layout style;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #fff;
+}
+
+/* 2. Tarjetas: Añadimos Flexbox para empujar los botones siempre al fondo */
+.pricing-card {
+  border: 1px solid rgba(255, 255, 255, .12);
+  background: rgba(255, 255, 255, .035);
+  padding: 36px;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+  contain: layout style paint;
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing-card.featured {
+  border-color: rgba(255, 255, 255, .45);
+  background:
+    radial-gradient(circle at 80% 10%, rgba(170, 0, 0, .22), transparent 36%),
+    rgba(255, 255, 255, .045);
+}
+
+.pricing-card:hover {
+  transform: translateY(-8px);
+  border-color: #fff;
+}
+
+/* 3. Textos: Títulos con más peso (bold) */
+.pricing-card h2 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 800; /* Más grosor */
+  text-transform: uppercase;
+  letter-spacing: -.03em;
+  color: #ffffff;
+}
+
+/* NUEVO: La descripción gris debajo del título */
+.pricing-desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+  font-weight: 400;
+  min-height: 42px; /* Mantiene la misma altura aunque unas tengan más texto que otras */
+}
+
+/* 4. Precio: Mucho más grueso y definido */
+.pricing-price {
+  font-size: 48px;
+  font-weight: 900; /* Peso máximo */
+  line-height: 1;
+  margin: 0 0 28px;
+  color: #ffffff;
+}
+
+.pricing-price span {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, .42);
+}
+
+/* 5. Listas: Ajuste de la viñeta para que sea el punto blanco de tu imagen */
+.pricing-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 40px;
+  display: grid;
+  gap: 14px;
+}
+
+.pricing-features li {
+  color: rgba(255, 255, 255, .7); /* Un poco más blancos para que se lean bien */
+  font-size: 15px;
+  padding-left: 18px;
+  position: relative;
+  line-height: 1.4;
+}
+
+.pricing-features li::before {
+  content: "•"; /* Cambiado del guión a un punto */
+  position: absolute;
+  left: 0;
+  font-size: 1.2em;
+  top: -2px;
+  color: #ffffff; /* Viñeta bien blanca */
+}
+
+/* NUEVO: 6. Botones (Faltaban en tu código) */
+.pricing-btn {
+  margin-top: auto; /* Esto tira el botón al fondo de la tarjeta */
+  display: block;
+  width: 100%;
+  padding: 16px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em; /* Ese espaciado premium entre letras */
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+/* Botón transparente con borde (Core y Studio) */
+.btn-outline {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #ffffff;
+}
+
+/* Botón sólido blanco (Drop) */
+.btn-solid {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #ffffff;
+}
+
+.btn-solid:hover {
+  background: transparent;
+  color: #ffffff;
+}
+
+@media (max-width: 900px) {
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}

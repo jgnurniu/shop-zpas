@@ -1,0 +1,286 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   LOGIN PAGE
+   Requiere: global.css cargado antes
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Page shell ───────────────────────────────────────────────────────────── */
+.auth-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 24px 80px;
+  background:
+    radial-gradient(circle at 72% 14%, rgba(170, 0, 0, .26), transparent 36%),
+    radial-gradient(circle at 18% 80%, rgba(255, 255, 255, .03), transparent 30%),
+    #060606;
+  overflow: hidden;
+}
+
+/* Línea diagonal decorativa de fondo */
+.auth-page::before {
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: 58%;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(255, 255, 255, .08) 30%,
+    rgba(200, 0, 0, .22) 55%,
+    rgba(255, 255, 255, .06) 75%,
+    transparent
+  );
+  content: "";
+  transform: rotate(-12deg);
+  pointer-events: none;
+}
+
+/* ── Card ─────────────────────────────────────────────────────────────────── */
+.auth-card {
+  position: relative;
+  width: min(480px, 100%);
+  border: 1px solid rgba(255, 255, 255, .1);
+  background: rgba(255, 255, 255, .028);
+  padding: 52px 48px 44px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .04),
+    0 32px 90px rgba(0, 0, 0, .6),
+    0 0 80px rgba(120, 0, 0, .12);
+  backdrop-filter: blur(2px);
+}
+
+/* Línea superior roja */
+.auth-card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(200, 0, 0, .7), transparent);
+  content: "";
+}
+
+/* ── Encabezado ───────────────────────────────────────────────────────────── */
+.auth-logo {
+  display: block;
+  font-size: 15px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: rgba(255, 255, 255, .35);
+  margin-bottom: 36px;
+}
+
+.auth-title {
+  margin: 0 0 6px;
+  font-size: clamp(34px, 6vw, 52px);
+  font-weight: 950;
+  line-height: .88;
+  text-transform: uppercase;
+  letter-spacing: -.055em;
+  color: #fff;
+}
+
+.auth-subtitle {
+  margin: 0 0 36px;
+  color: rgba(255, 255, 255, .4);
+  font-size: 13px;
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+/* ── Campos ───────────────────────────────────────────────────────────────── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.field label {
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  color: rgba(255, 255, 255, .38);
+}
+
+.field input {
+  width: 100%;
+  height: 52px;
+  padding: 0 18px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  background: rgba(0, 0, 0, .38);
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.field input::placeholder {
+  color: rgba(255, 255, 255, .2);
+}
+
+.field input:focus {
+  border-color: rgba(255, 255, 255, .5);
+  background: rgba(0, 0, 0, .55);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .04);
+}
+
+/* Error state */
+.field input.has-error {
+  border-color: rgba(220, 30, 30, .7);
+}
+
+.field-error {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 80, 80, .9);
+  letter-spacing: 0.04em;
+  min-height: 16px;
+  display: block;
+}
+
+/* ── Submit button ────────────────────────────────────────────────────────── */
+.auth-submit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 52px;
+  margin-top: 28px;
+  padding: 0;
+  border: 1px solid #fff;
+  background: #fff;
+  color: #000;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-family: inherit;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    background 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s ease;
+}
+
+.auth-submit::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.4) 45%, transparent 60%);
+  content: "";
+  transform: translateX(-120%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.auth-submit:hover {
+  background: transparent;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, .5);
+}
+
+.auth-submit:hover::after {
+  transform: translateX(120%);
+}
+
+.auth-submit:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Mensaje global del form ──────────────────────────────────────────────── */
+.form-message {
+  margin-top: 18px;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+  display: none;
+}
+
+.form-message:not(:empty) {
+  display: block;
+}
+
+.form-message--success {
+  color: rgba(80, 220, 120, .95);
+  border-color: rgba(80, 220, 120, .2);
+  background: rgba(80, 220, 120, .06);
+}
+
+.form-message--error {
+  color: rgba(255, 80, 80, .95);
+  border-color: rgba(220, 30, 30, .2);
+  background: rgba(220, 30, 30, .06);
+}
+
+/* ── Switch link ──────────────────────────────────────────────────────────── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 28px 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, .08);
+  content: "";
+}
+
+.auth-divider span {
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, .24);
+}
+
+.auth-switch {
+  text-align: center;
+  color: rgba(255, 255, 255, .42);
+  font-size: 13px;
+  margin: 0;
+}
+
+.auth-switch a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, .28);
+  padding-bottom: 1px;
+  transition: border-color 0.22s ease, color 0.22s ease;
+}
+
+.auth-switch a:hover {
+  border-color: #fff;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 560px) {
+  .auth-card {
+    padding: 40px 28px 36px;
+  }
+
+  .auth-page::before {
+    display: none;
+  }
+}

@@ -1,0 +1,91 @@
+/*
+ * ADVERTENCIA: Este archivo redefine clases que también existen en global.css
+ * e index.css (.btn, .hero, .eyebrow, .section-title, .muted, etc.) con
+ * variables CSS de color azul/blanco que entran en conflicto con el tema oscuro.
+ *
+ * Si este archivo se carga junto a los otros dos, el resultado depende del
+ * orden de los <link> en el HTML. Si ves estilos azules/blancos mezclados con
+ * el tema oscuro, este archivo es el culpable.
+ *
+ * RECOMENDACIÓN: No uses home.css si ya tenés global.css + index.css.
+ * Las secciones no conflictivas se mantienen abajo.
+ */
+
+/* ── Solo estilos únicos de home.css (no duplicados en global/index) ────── */
+
+/* Skeleton loader */
+.skeleton {
+  background: linear-gradient(90deg, #111 25%, #1a1a1a 50%, #111 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Search bar */
+.search-bar {
+  max-width: 680px;
+  margin: 0 auto 40px;
+  background: #0d0d0d;
+  border: 1px solid rgba(255, 255, 255, .12);
+}
+
+.search-input {
+  width: 100%;
+  padding: 18px 28px;
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, .3);
+}
+
+/* Filter chips */
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.chip {
+  padding: 9px 20px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, .14);
+  color: rgba(255, 255, 255, .6);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+}
+
+.chip:hover,
+.chip.active {
+  border-color: #fff;
+  color: #fff;
+  background: rgba(255, 255, 255, .06);
+}
+
+/* Side dots — versión home */
+.side-dots a {
+  width: 6px;
+  height: 40px;
+  background: rgba(255, 255, 255, .22);
+  border-radius: 3px;
+  transition: height 0.3s ease, background 0.3s ease;
+}
+
+.side-dots a:hover,
+.side-dots a.active {
+  height: 56px;
+  background: #fff;
+}

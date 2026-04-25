@@ -1,0 +1,195 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ABOUT SECTION
+   Requiere: global.css cargado antes
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Animaciones ──────────────────────────────────────────────────────────── */
+@keyframes about-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes image-scan {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+/* ── Grid ─────────────────────────────────────────────────────────────────── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 48px;
+  align-items: center;
+  padding-bottom: 90px;
+  contain: layout style;
+}
+
+/* Entrada escalonada de columnas — activar con JS añadiendo .is-visible al grid */
+.about-grid.is-visible .about-panel {
+  animation: about-fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.about-grid.is-visible .about-image {
+  animation: about-fade-in 0.6s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── Panel de texto ───────────────────────────────────────────────────────── */
+.about-panel {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, .1);
+  background: rgba(255, 255, 255, .028);
+  padding: 48px 44px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .04),
+    0 24px 60px rgba(0, 0, 0, .45);
+  overflow: hidden;
+}
+
+/* Línea roja superior — consistente con auth-card */
+.about-panel::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 10%, rgba(200, 0, 0, .65), rgba(255, 80, 80, .3) 70%, transparent);
+  content: "";
+}
+
+/* Brillo de esquina */
+.about-panel::after {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle at 100% 100%, rgba(160, 0, 0, .08), transparent 65%);
+  content: "";
+  pointer-events: none;
+}
+
+.about-panel h2 {
+  position: relative;
+  margin: 0 0 20px;
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: -.055em;
+  line-height: .9;
+  color: #fff;
+}
+
+/* Línea decorativa bajo el h2 */
+.about-panel h2::after {
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: rgba(200, 0, 0, .7);
+  content: "";
+  margin-top: 16px;
+}
+
+.about-panel p {
+  position: relative;
+  line-height: 1.9;
+  color: rgba(255, 255, 255, .48);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+/* Si hay múltiples párrafos */
+.about-panel p + p {
+  margin-top: 16px;
+}
+
+/* Etiqueta flotante — opcional, para algo como "Nuestra historia" */
+/* Añadí un <span class="about-label"> arriba del h2 en el HTML si querés usarla */
+.about-label {
+  display: inline-block;
+  margin-bottom: 20px;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  color: rgba(255, 255, 255, .28);
+}
+
+/* ── Imagen / panel visual ────────────────────────────────────────────────── */
+.about-image {
+  position: relative;
+  min-height: 520px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  background:
+    radial-gradient(circle at 58% 36%, rgba(140, 0, 0, .28), transparent 52%),
+    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, .02), transparent 35%),
+    #080808;
+  overflow: hidden;
+  contain: layout style paint;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .04),
+    0 24px 60px rgba(0, 0, 0, .5);
+}
+
+/* Línea de escaneo animada */
+.about-image::before {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200, 0, 0, .5), transparent);
+  content: "";
+  animation: image-scan 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Cruz de mira en el centro — decorativa */
+.about-image::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  content: "";
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at 58% 36%, black 30%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse at 58% 36%, black 30%, transparent 72%);
+}
+
+/* Esquinas decorativas — añadir <span class="about-image-corner"> x4 en el HTML,
+   o generarlas con JS. Alternativa: usar outline-offset trick sin HTML extra */
+.about-image-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-color: rgba(200, 0, 0, .55);
+  border-style: solid;
+}
+
+.about-image-corner:nth-child(1) { top: 16px;    left: 16px;    border-width: 1px 0 0 1px; }
+.about-image-corner:nth-child(2) { top: 16px;    right: 16px;   border-width: 1px 1px 0 0; }
+.about-image-corner:nth-child(3) { bottom: 16px; left: 16px;    border-width: 0 0 1px 1px; }
+.about-image-corner:nth-child(4) { bottom: 16px; right: 16px;   border-width: 0 1px 1px 0; }
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-image {
+    min-height: 320px;
+  }
+
+  .about-panel {
+    padding: 36px 28px;
+  }
+}

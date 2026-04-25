@@ -1,0 +1,113 @@
+/* 1. Layout Base */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 40px;
+  padding-bottom: 90px;
+  contain: layout style;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* 2. Clase compartida para ambos cuadros (Izquierda y Derecha) */
+.contact-panel {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.035);
+  padding: 48px 40px;
+}
+
+/* --- LADO IZQUIERDO: INFO --- */
+.contact-info h2 {
+  margin: 0 0 20px;
+  font-size: 28px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.contact-info p {
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 15px;
+  margin-bottom: 40px; /* Empuja la lista hacia abajo */
+}
+
+.contact-list {
+  display: grid;
+  gap: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+  list-style: none; /* Por si usas <ul> */
+  padding: 0;
+  margin: 0;
+}
+
+/* --- LADO DERECHO: FORMULARIO --- */
+.form-group {
+  margin-bottom: 24px;
+}
+
+/* Las etiquetas pequeñitas arriba de los inputs */
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em; /* Espaciado premium */
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 8px;
+}
+
+/* Los campos de texto */
+.form-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2); /* Fondo súper oscuro */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 14px 16px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  box-sizing: border-box; /* Evita que el padding rompa el ancho */
+}
+
+/* Efecto al hacer click en el input */
+.form-input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Específico para la caja de mensaje */
+textarea.form-input {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* El botón blanco */
+.submit-btn {
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  padding: 16px 32px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.submit-btn:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+}

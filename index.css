@@ -1,0 +1,506 @@
+/* ── Hero ─────────────────────────────────────────────────────────────────── */
+.hero {
+  --mouse-x: 0px;
+  --mouse-y: 0px;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --scroll-shift: 0px;
+  --shoe-scale: 1;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #050505;
+  perspective: 1200px;
+  isolation: isolate;
+}
+
+/* OPTIM: eliminado filter:blur(22px) en ::before animado.
+   Un blur sobre un área tan grande es el mayor cuello de botella de la página.
+   Reemplazado por gradiente opaco estático → zero GPU cost en cada frame. */
+.hero::before {
+  position: absolute;
+  inset: -20%; /* Aumentado para que no se corten los bordes al moverlo */
+  z-index: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.04),
+    transparent 38%
+  );
+  content: "";
+  opacity: 0.9;
+  /* El movimiento se hace aquí, es mucho más fluido para la GPU */
+  transform: translate3d(calc(var(--mouse-x) * 0.1), calc(var(--mouse-y) * 0.1), 0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* OPTIM: .hero-left y .hero-right son fondos estáticos.
+   Eliminado will-change:transform → evita capas GPU innecesarias permanentes.
+   El paralax leve (scroll-shift*0.1) se aplica en JS con requestAnimationFrame,
+   que ya es eficiente. */
+.hero-left,
+.hero-right {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform: translate3d(0, calc(var(--scroll-shift) * 0.1), 0);
+}
+
+.hero-left {
+  background: #0a0a0a;
+}
+
+/* OPTIM: eliminado filter:blur(4px) en ::before de hero-left.
+   Era invisible (fondo oscuro sobre fondo oscuro) y costaba una operación de blur. */
+.hero-left::before {
+  position: absolute;
+  inset: -12%;
+  background: radial-gradient(circle at 30% 50%, rgba(50, 50, 50, 0.62), transparent 60%);
+  content: "";
+  transform: translate3d(calc(var(--mouse-x) * 0.015), calc(var(--mouse-y) * 0.015), 0) scale(1.04);
+}
+
+/* OPTIM: eliminado backdrop-filter:blur(0.4px) → prácticamente invisible
+   pero forzaba una capa de composición. */
+.hero-left::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, rgba(255, 255, 255, 0.03), transparent 34%, rgba(255, 255, 255, 0.015));
+  content: "";
+  opacity: 0.7;
+}
+
+.hero-right {
+  clip-path: polygon(35% 0, 100% 0, 100% 100%, 75% 100%);
+  background: #8b0000;
+  pointer-events: none;
+}
+
+/* OPTIM: eliminado filter:blur(6px) del ::before de hero-right.
+   La mezcla mix-blend-mode:overlay + blur es uno de los pares más costosos.
+   Reemplazado por gradiente puro. */
+.hero-right::before {
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(circle at center, rgba(255, 50, 50, 0.4), transparent 70%);
+  content: "";
+  /* Movimiento sólido por capa, no por redibujado de pixel */
+  transform: translate3d(calc(var(--mouse-x) * -0.05), calc(var(--mouse-y) * -0.05), 0) scale(1.04);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.hero-right::after {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 62% 34%, rgba(255, 255, 255, 0.08), transparent 24%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.18), transparent 55%);
+  content: "";
+  opacity: 0.9;
+}
+
+/* ── Hero content ─────────────────────────────────────────────────────────── */
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  z-index: 10;
+  max-width: 680px;
+  transform: translateY(-50%);
+}
+
+.hero-title,
+.hero-model,
+.hero-text,
+.hero-controls {
+  opacity: 0;
+  transform: translate3d(-44px, 0, 0);
+  animation: heroTextIn 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-model   { animation-delay: 0.12s; }
+.hero-text    { animation-delay: 0.22s; }
+.hero-controls { animation-delay: 0.34s; }
+
+.hero-title {
+  margin: 0 0 26px;
+  color: #fff;
+  font-size: clamp(68px, 8vw, 116px);
+  font-weight: 950;
+  line-height: 0.85;
+  text-transform: uppercase;
+  letter-spacing: -0.065em;
+  text-shadow: 0 22px 54px rgba(0, 0, 0, 0.34);
+}
+
+.hero-model {
+  margin-bottom: 28px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: clamp(18px, 2vw, 26px);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+}
+
+.hero-text {
+  max-width: 430px;
+  margin: 0 0 48px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.75;
+  letter-spacing: 0.03em;
+}
+
+.hero-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 46px;
+}
+
+/* ── Stepper ──────────────────────────────────────────────────────────────── */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.circle-btn {
+  position: relative;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.circle-btn:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+  transform: scale(1.08);
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.16);
+}
+
+.step {
+  font-family: monospace;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+}
+
+/* ── Hero shoe ────────────────────────────────────────────────────────────── */
+.hero-shoe-wrap {
+  position: absolute;
+  top: 50%;
+  right: 7%;
+  display: grid;
+  width: min(56vw, 980px);
+  aspect-ratio: 1;
+  place-items: center;
+  pointer-events: none;
+  transform: translate3d(var(--shoe-x, 0px), calc(-50% + var(--scroll-shift)), 0)
+             rotate(-15deg)
+             rotateX(var(--tilt-y))
+             rotateY(var(--tilt-x))
+             scale(var(--shoe-scale));
+  transform-style: preserve-3d;
+  /* OPTIM: transition corto solo para el tilt suave; el JS ya usa lerp */
+  transition: transform 0.08s linear;
+  will-change: transform;
+  animation: shoeWrapIn 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+
+.hero-shoe-wrap::before {
+  position: absolute;
+  right: 12%;
+  bottom: 20%;
+  width: 62%;
+  height: 18%;
+  border-radius: 50%;
+  /* OPTIM: mantenemos este blur porque es estático (no animado) y pequeño */
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.75), transparent 68%);
+  content: "";
+  filter: blur(22px);
+  transform: translateZ(-80px) rotate(14deg);
+  opacity: 0.72;
+}
+
+.hero-shoe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  /* OPTIM: drop-shadow simplificado a 2 capas (era 2 también; ok) */
+  filter: drop-shadow(0 34px 70px rgba(0, 0, 0, 0.92)) drop-shadow(0 0 34px rgba(255, 255, 255, 0.055));
+  transform: translateZ(80px) scale(1.28);
+  will-change: transform, opacity;
+  animation:
+    shoeImageIn  1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.18s forwards,
+    shoeFloat    5.8s  ease-in-out                    1.24s infinite;
+}
+
+.hero-right .hero-shoe {
+  filter: drop-shadow(0 42px 86px rgba(100, 0, 0, 0.86)) drop-shadow(0 0 45px rgba(255, 30, 30, 0.18));
+}
+
+/* ── Decorative line ──────────────────────────────────────────────────────── */
+.slice-line {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* OPTIM: drop-shadow simplificado + eliminado mix-blend-mode:screen
+     que forzaba composición de toda la capa inferior */
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
+  opacity: 0.75;
+}
+
+.slice-line line {
+  stroke-dasharray: 145;
+  stroke-dashoffset: 145;
+  animation:
+    diagonalReveal 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.14s forwards,
+    diagonalEnergy 3.8s  ease-in-out                    1.08s infinite;
+}
+
+/* ── Diagonal beam ────────────────────────────────────────────────────────── */
+.hero::after {
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 34.2%;
+  z-index: 5;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(255, 255, 255, 0.42),
+    rgba(255, 28, 28, 0.72),
+    rgba(255, 255, 255, 0.28),
+    transparent
+  );
+  content: "";
+  /* OPTIM: simplificado drop-shadow; eliminado doble drop-shadow en blur
+     que se recalculaba en cada frame de la animación diagonalBeamPulse */
+  filter: blur(0.5px);
+  opacity: 0;
+  transform: rotate(-21.8deg) scaleY(0.1);
+  transform-origin: top;
+  animation:
+    diagonalBeamReveal 1s   cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards,
+    diagonalBeamPulse  4.2s ease-in-out                    1.12s infinite;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* ── UI chrome ────────────────────────────────────────────────────────────── */
+.vertical-copy {
+  position: absolute;
+  bottom: 48px;
+  left: 48px;
+  z-index: 12;
+  color: rgba(255, 255, 255, 0.28);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.42em;
+  transform: rotate(180deg);
+  writing-mode: vertical-rl;
+  opacity: 0;
+  animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.72s forwards;
+}
+
+.side-dots {
+  position: absolute;
+  top: 50%;
+  right: 48px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  transform: translateY(-50%);
+  opacity: 0;
+  animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.66s forwards;
+}
+
+.side-dots a {
+  width: 4px;
+  height: 34px;
+  background: rgba(255, 255, 255, 0.32);
+  transition: height 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;
+}
+
+.side-dots a:first-child,
+.side-dots a:hover {
+  height: 52px;
+  background: #fff;
+  transform: scaleX(1.25);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.7), 0 0 34px rgba(255, 0, 0, 0.38);
+}
+
+/* ── Showcase section ─────────────────────────────────────────────────────── */
+.showcase-preview {
+  position: relative;
+  overflow: hidden;
+  background: #070707;
+  padding: 110px 0;
+  contain: layout style paint;
+}
+
+.showcase-preview::before {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 78% 10%, rgba(140, 0, 0, 0.25), transparent 36%),
+    radial-gradient(circle at 20% 70%, rgba(255, 255, 255, 0.05), transparent 30%);
+  content: "";
+  transform: translate3d(0, calc(var(--section-shift, 0px) * -0.18), 0);
+}
+
+.preview-head {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 36px;
+  margin-bottom: 56px;
+}
+
+.preview-head p {
+  max-width: 440px;
+  line-height: 1.8;
+}
+
+/* ── Keyframes ────────────────────────────────────────────────────────────── */
+@keyframes heroTextIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(-48px, 0, 0);
+    /* OPTIM: eliminado filter:blur(7px) del keyframe → blur animado en texto
+       es extremadamente costoso (re-rasterización en cada frame) */
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes shoeWrapIn {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes shoeImageIn {
+  0% {
+    opacity: 0;
+    transform: translateZ(40px) scale(1.12);
+    /* OPTIM: eliminado filter:blur(7px) del keyframe del zapato
+       (misma razón que heroTextIn) */
+  }
+  100% {
+    opacity: 1;
+    transform: translateZ(80px) scale(1.42);
+  }
+}
+
+@keyframes shoeFloat {
+  0%, 100% { translate: 0 0; }
+  50%       { translate: 0 -10px; }
+}
+
+@keyframes diagonalReveal {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes diagonalEnergy {
+  0%, 100% { opacity: 0.52; stroke-width: 1.4; }
+  50%       { opacity: 1;    stroke-width: 2.6; }
+}
+
+@keyframes diagonalBeamReveal {
+  0%   { opacity: 0;    transform: rotate(-21.8deg) scaleY(0.1); }
+  100% { opacity: 0.65; transform: rotate(-21.8deg) scaleY(1.25); }
+}
+
+/* OPTIM: simplificado diagonalBeamPulse — eliminado drop-shadow animado
+   (drop-shadow con blur en cada frame de una animación infinite es muy costoso).
+   Solo se anima opacity. */
+@keyframes diagonalBeamPulse {
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 0.75; }
+}
+
+@keyframes fadeUp {
+  0%   { opacity: 0; translate: 0 14px; }
+  100% { opacity: 1; translate: 0 0; }
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero-title {
+    font-size: 58px;
+  }
+
+  .hero-content {
+    right: 24px;
+    left: 24px;
+  }
+
+  .hero-shoe-wrap {
+    right: -28%;
+    width: 98vw;
+    opacity: 0.72;
+  }
+
+  .hero-right {
+    clip-path: polygon(54% 0, 100% 0, 100% 100%, 80% 100%);
+  }
+
+  .hero::after {
+    left: 54%;
+  }
+
+  .preview-head {
+    display: block;
+  }
+
+  .vertical-copy,
+  .side-dots {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero-title {
+    font-size: 48px;
+  }
+
+  .hero-model {
+    font-size: 15px;
+  }
+
+  .hero-controls {
+    gap: 22px;
+  }
+
+  .hero-shoe-wrap {
+    top: 58%;
+    right: -45%;
+    opacity: 0.6;
+  }
+}
