@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro — Leonardise</title>
+  <link rel="stylesheet" href="assets/css/global.css" />
+  <link rel="stylesheet" href="assets/css/register.css" />
+</head>
+<body>
+
+  <div id="site-header"></div>
+
+  <main class="auth-page">
+    <div class="auth-card">
+
+      <span class="auth-logo">Leonardise</span>
+
+      <h1 class="auth-title">Crear cuenta</h1>
+      <p class="auth-subtitle">Unite a Leonardise y accedé a lanzamientos exclusivos y ofertas especiales.</p>
+
+      <form id="register-form" novalidate>
+        <input type="hidden" id="csrf-token" name="csrf_token" value="" />
+
+        <div class="field">
+          <label for="name">Nombre completo</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Tu nombre"
+            autocomplete="name"
+            required
+          />
+          <span class="field-error" id="name-error"></span>
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="tu@email.com"
+            autocomplete="email"
+            required
+          />
+          <span class="field-error" id="email-error"></span>
+        </div>
+
+        <div class="field">
+          <label for="password">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Mínimo 6 caracteres"
+            autocomplete="new-password"
+            required
+            minlength="6"
+          />
+          <div class="password-strength">
+            <div class="password-strength-bar" id="pwd-bar"></div>
+          </div>
+          <span class="field-error" id="password-error"></span>
+        </div>
+
+        <button type="submit" class="auth-submit" id="register-btn">
+          Crear cuenta
+        </button>
+
+        <p id="register-message" class="form-message" role="alert" aria-live="polite"></p>
+      </form>
+
+      <p class="auth-terms">
+        Al registrarte aceptás nuestros
+        <a href="#">Términos de uso</a> y
+        <a href="#">Política de privacidad</a>.
+      </p>
+
+      <div class="auth-divider"><span>o</span></div>
+
+      <p class="auth-switch">
+        ¿Ya tenés cuenta?
+        <a href="login.html">Iniciá sesión</a>
+      </p>
+
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/global.js"></script>
+  <script src="assets/js/register.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Detail | Leonardise</title>
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/product.css">
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="product-detail-page">
+    <div class="container">
+      <section class="detail-layout">
+        <div class="detail-gallery">
+          <div class="main-image"><img id="main-product-image" src="assets/images/black-sneaker.png" alt="Nike Airmax 270"></div>
+          <div class="thumbs">
+            <button class="thumb active" data-color="black"><img src="assets/images/black-sneaker.png" alt="Black colorway"></button>
+            <button class="thumb" data-color="red"><img src="assets/images/red-sneaker.png" alt="Red colorway"></button>
+            <button class="thumb" data-color="black"><img src="assets/images/black-sneaker.png" alt="Black colorway alternate"></button>
+          </div>
+        </div>
+        <div class="detail-info">
+          <div class="reviews">★★★★★ <span>128 reviews</span></div>
+          <div id="detail-model" class="detail-model">Black Motion</div>
+          <h1 id="detail-title" class="detail-title">Nike Airmax 270</h1>
+          <div id="detail-price" class="detail-price">$199</div>
+          <p id="detail-description" class="detail-description">Una silueta urbana con cámara Air visible, upper respirable y una transición visual inspirada en configuradores de lujo.</p>
+          <div class="color-selector">
+            <div class="label-row"><span>Color</span></div>
+            <div class="color-options">
+              <button class="color-dot color-black active" data-color="black" aria-label="Negro"></button>
+              <button class="color-dot color-red" data-color="red" aria-label="Rojo"></button>
+            </div>
+          </div>
+          <div class="size-section">
+            <div class="label-row"><span>Talle</span><span id="stock" class="stock">Quedan 3 unidades</span></div>
+            <div id="sizes" class="sizes"></div>
+          </div>
+          <div class="cta-row">
+            <button id="buy-now" class="btn btn-primary">Comprar ahora</button>
+            <button id="add-cart" class="btn btn-secondary">Agregar al carrito</button>
+          </div>
+          <div class="accordion">
+            <div class="accordion-item active"><button class="accordion-button">Descripción <span>⌄</span></button><div id="description-content" class="accordion-content">Una silueta urbana con cámara Air visible.</div></div>
+            <div class="accordion-item"><button class="accordion-button">Materiales <span>⌄</span></button><div id="material-content" class="accordion-content"></div></div>
+            <div class="accordion-item"><button class="accordion-button">Envíos <span>⌄</span></button><div id="shipping-content" class="accordion-content"></div></div>
+            <div class="accordion-item"><button class="accordion-button">Devoluciones <span>⌄</span></button><div id="returns-content" class="accordion-content"></div></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script src="assets/js/global.js"></script>
+  <script src="assets/js/product.js"></script>
+</body>
+</html>
